@@ -1,0 +1,12 @@
+{
+  "name": "ferienhaus-cottage-website",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Static website for Cottage Sächsische Schweiz (Ferienhaus in Pirna)",
+  "scripts": {
+    "lint": "htmlhint *.html"
+  },
+  "devDependencies": {
+    "htmlhint": "^1.9.2"
+  }
+}
