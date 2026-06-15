@@ -26,3 +26,10 @@
   OAuth – bewusst NICHT in diesem öffentlichen Repo eingerichtet
   (Zugangsdaten-Sicherheit). Als offene Idee vermerkt, Use-Case noch zu
   klären.
+- Klarstellung: In dieser Session besteht KEIN Zugriff auf
+  ferienhaus19@gmail.com oder komplexchef@gmail.com – nichts wurde an den
+  echten Postfächern verändert. Stattdessen Briefing
+  `second-brain/mail-organisation.md` erstellt: Phase 1 = ferienhaus19@gmail.com
+  (Kategorien: Buchungen, Gäste-Kommunikation, Finanzen, Sonstiges), Phase 2 =
+  komplexchef@gmail.com (Briefing folgt später). Gmail-Connector ist noch
+  nicht verbunden – das ist der nächste Schritt vor jeder Mail-Aktion.

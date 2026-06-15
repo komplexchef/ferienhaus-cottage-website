@@ -17,14 +17,16 @@ Ziel: Mündliche Kommunikation mit Jarvis / Second Brain ermöglichen.
   vorbereitet). Offen: Komplexchef muss das Projekt selbst auf claude.ai
   (Web) anlegen – das kann Claude Code nicht übernehmen (kein
   Account-Zugriff).
-- [ ] **Mails einbinden:** claude.ai bietet einen offiziellen
-  Gmail-Connector für Projects (lesen, durchsuchen, Antwort-Entwürfe –
-  kein direktes Versenden). Anleitung dazu in
-  `second-brain/jarvis-claude-projekt.md` (Schritt 3b), Einrichtung läuft
-  über claude.ai/Google-Login, betrifft dieses Repo nicht. Mail-Zugriff
-  *innerhalb* der Claude-Code-Sessions (dieses Repo) wäre ein separates
-  Vorhaben mit eigenen Sicherheitsfragen (OAuth-Zugangsdaten dürfen nicht
-  ins Repo) – noch zu klären, was Jarvis mit Mails konkret tun soll.
+- [ ] **Mails einbinden & organisieren:** claude.ai bietet einen offiziellen
+  Gmail-Connector für Projects (lesen, durchsuchen, Antwort-Entwürfe – kein
+  direktes Versenden/Löschen/Labeln). Anleitung in
+  `second-brain/jarvis-claude-projekt.md` (Schritt 3b). Konkretes Briefing
+  für die Sortierung/Aufräumaktion (erst `ferienhaus19@gmail.com`, danach
+  `komplexchef@gmail.com`) liegt in `second-brain/mail-organisation.md`.
+  Nächster Schritt: Connector für ferienhaus19@gmail.com verbinden, dann
+  Jarvis das Briefing ausführen lassen. Mail-Zugriff *innerhalb* der
+  Claude-Code-Sessions (dieses Repo) bleibt separat – keine OAuth-Daten ins
+  Repo.
 
 ## Zurückgestellt
 
