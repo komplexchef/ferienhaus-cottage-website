@@ -160,8 +160,8 @@ span.en { display: none; }
     <div class="header-inner">
       <div class="header-pre">✦ Herzlich Willkommen · Welcome ✦</div>
       <h1>Ferienhaus<br><em>„Cottage Sächsische Schweiz"</em></h1>
-      <div class="header-location de">René &amp; Heike</div>
-      <div class="header-location en">René &amp; Heike</div>
+      <div class="header-location de">Heike &amp; René</div>
+      <div class="header-location en">Heike &amp; René</div>
       <div class="header-rule"></div>
       <div class="header-sub">Gästeinformation &nbsp;·&nbsp; Guest Information</div>
     </div>
@@ -173,7 +173,7 @@ span.en { display: none; }
       <div class="contact-icon">👤</div>
       <div>
         <div class="contact-label"><span class="de">Ihre Gastgeber</span><span class="en">Your Hosts</span></div>
-        <div class="contact-val">René &amp; Heike</div>
+        <div class="contact-val">Heike &amp; René</div>
       </div>
     </div>
     <div style="width:1px;height:40px;background:var(--border);"></div>
@@ -516,6 +516,24 @@ span.en { display: none; }
     </div>
   </div>
 
+  <!-- GÄSTETAXE -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-icon">🏛️</span>
+      <div>
+        <div class="section-title-text de">Gästetaxe</div>
+        <div class="section-title-text en">City Tax</div>
+      </div>
+    </div>
+    <div class="card" style="padding:20px;display:flex;align-items:center;gap:24px;flex-wrap:wrap;">
+      <div id="qrcode-gaestetaxe" style="width:120px;height:120px;flex-shrink:0;"></div>
+      <div style="flex:1;min-width:220px;">
+        <div class="card-text de">Die Stadt Pirna erhebt eine Gästetaxe von <strong>2,00 € pro Person und Übernachtung</strong> (gültig ab 1. August 2026; Kinder unter 18 Jahren sind befreit). Alle Infos &amp; die Satzung im Wortlaut bei der Stadt Pirna: <a href="https://www.pirna.de/pirna-erleben/uebernachten/gaestetaxe/" target="_blank" rel="noopener" style="color:var(--gold);font-weight:600;">pirna.de/gaestetaxe</a></div>
+        <div class="card-text en">The city of Pirna charges a city tax of <strong>€2.00 per person and night</strong> (effective from 1 August 2026; children under 18 are exempt). Full details &amp; the official regulation from the city of Pirna: <a href="https://www.pirna.de/pirna-erleben/uebernachten/gaestetaxe/" target="_blank" rel="noopener" style="color:var(--gold);font-weight:600;">pirna.de/gaestetaxe</a></div>
+      </div>
+    </div>
+  </div>
+
   <!-- ABREISE -->
   <div class="section">
     <div class="section-header">
@@ -593,6 +611,14 @@ function setLang(lang, btn) {
     text: "https://komplexchef.github.io/ferienhaus-cottage-website/gaesteinformation.html",
     width: 160,
     height: 160,
+    colorDark: "#1e1a14",
+    colorLight: "#ffffff",
+    correctLevel: QRCode.CorrectLevel.H
+  });
+  new QRCode(document.getElementById("qrcode-gaestetaxe"), {
+    text: "https://www.pirna.de/pirna-erleben/uebernachten/gaestetaxe/",
+    width: 120,
+    height: 120,
     colorDark: "#1e1a14",
     colorLight: "#ffffff",
     correctLevel: QRCode.CorrectLevel.H
