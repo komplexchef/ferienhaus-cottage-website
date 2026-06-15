@@ -1,8 +1,8 @@
-# Second Brain
+# Second Brain (Jarvis)
 
-Dein persönliches Notiz- und Steuerungssystem. Du schreibst hier rein, Claude
-liest es bei jeder Session (siehe `CLAUDE.md` im Repo-Root) und hilft dir,
-den Überblick über Projekte und Ideen zu behalten.
+Dein persönliches Notiz- und Steuerungssystem. Du schreibst hier rein, "Jarvis"
+(Claude in der Rolle aus `CLAUDE.md` im Repo-Root) liest es bei jeder Session
+und hilft dir, den Überblick über Projekte und Ideen zu behalten.
 
 - **`inbox.md`** – Schnelle Notizen, Ideen, Fragen, Aufgaben. Einfach
   reinschreiben (z.B. `- [ ] Frage: ...`), Claude verarbeitet die Einträge
