@@ -12,10 +12,11 @@ Ziel: Mündliche Kommunikation mit Jarvis / Second Brain ermöglichen.
 - [ ] **Mobile Eingabe für Inbox:** `second-brain/inbox.md` per GitHub-App auf
   dem Handy bearbeiten (Diktierfunktion der Tastatur) oder GitHub Issues als
   Inbox nutzen – einfacher unterwegs als direktes Datei-Editieren.
-- [ ] **"Mit Jarvis sprechen" via Claude Mobile App:** Eigenes Claude.ai-Projekt
-  mit Jarvis-Persona (aus `CLAUDE.md`) + Second-Brain-Inhalten als
-  Projektwissen einrichten; Voice Mode der Claude-App für Gespräche nutzen,
-  Ergebnisse danach manuell/per nächster Session ins Repo zurückspielen.
+- [ ] **"Mit Jarvis sprechen" via Claude Mobile App:** Anleitung steht in
+  `second-brain/jarvis-claude-projekt.md` (Custom Instructions + Wissen
+  vorbereitet). Offen: Komplexchef muss das Projekt selbst auf claude.ai
+  (Web) anlegen – das kann Claude Code nicht übernehmen (kein
+  Account-Zugriff).
 
 ## Zurückgestellt
 

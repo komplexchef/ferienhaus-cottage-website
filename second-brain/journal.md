@@ -15,3 +15,7 @@
   vorerst zurückgestellt.
 - `jarvis.html` umgesetzt: zeigt Inbox/Projekte/Ideen aus `second-brain/` und
   liest sie per Web Speech API (Deutsch) vor. HTML-Lint ok.
+- "Mit Jarvis sprechen" (Claude Mobile App, Voice Mode) vorbereitet:
+  `second-brain/jarvis-claude-projekt.md` enthält fertige Custom Instructions
+  + Setup-Anleitung. Anlegen des Claude.ai-Projekts muss Komplexchef selbst
+  übernehmen (kein Account-Zugriff für Claude Code).
