@@ -60,6 +60,22 @@ nachsynchronisieren.
 - Nach größeren Second-Brain-Updates (durch Claude Code) den Text einfach
   erneut einfügen.
 
+## Schritt 3b: Mails einbinden (Gmail-Connector, optional)
+
+claude.ai bietet einen offiziellen **Gmail-Connector** für Projects:
+
+1. Im Projekt "Jarvis" → "Add content" / Connectors → **Gmail** verbinden
+   (eigener Google-Login, OAuth – läuft komplett über claude.ai, betrifft
+   dieses Repo nicht).
+2. Damit kann Jarvis (auch per Voice Mode) E-Mails durchsuchen,
+   zusammenfassen und **Antwort-Entwürfe** vorschlagen.
+3. **Wichtig:** Der Connector ist aktuell **lesend + Entwurf** – Jarvis kann
+   keine Mails direkt versenden, nur Entwürfe vorbereiten, die du selbst
+   abschickst.
+
+Diese Mail-Anbindung gilt nur für das claude.ai-Projekt/Voice-Mode, nicht für
+Claude-Code-Sessions in diesem Repo (siehe Hinweis unten).
+
 ## Schritt 4: Per Voice Mode mit Jarvis sprechen
 
 1. Claude-App auf dem Handy öffnen.
@@ -72,3 +88,11 @@ Nach dem Gespräch wichtige neue Ideen/Aufgaben in
 `second-brain/inbox.md` eintragen (z.B. über die GitHub-App auf dem Handy).
 Die nächste Claude-Code-Session liest die Inbox automatisch und arbeitet sie
 ab (siehe `CLAUDE.md`).
+
+## Mail-Zugriff in Claude-Code-Sessions (separates Thema)
+
+Falls Jarvis auch *innerhalb_dieses_Repos* (Claude Code) auf Mails zugreifen
+soll, bräuchte es einen Gmail-MCP-Server mit OAuth-Zugangsdaten. Diese dürfen
+**niemals in dieses (öffentliche) Repo** committed werden, sondern gehören in
+persönliche, lokale Claude-Einstellungen außerhalb des Projekts. Das ist ein
+eigenes Vorhaben mit Sicherheits-Abwägungen – siehe `second-brain/ideas.md`.

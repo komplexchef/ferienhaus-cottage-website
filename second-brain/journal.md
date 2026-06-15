@@ -19,3 +19,10 @@
   `second-brain/jarvis-claude-projekt.md` enthält fertige Custom Instructions
   + Setup-Anleitung. Anlegen des Claude.ai-Projekts muss Komplexchef selbst
   übernehmen (kein Account-Zugriff für Claude Code).
+- Mail-Anbindung recherchiert: claude.ai Projects bieten offiziellen
+  Gmail-Connector (lesen/durchsuchen/Entwürfe, kein Versand) – Anleitung als
+  Schritt 3b in `jarvis-claude-projekt.md` ergänzt. Mail-Zugriff *in
+  Claude-Code-Sessions* (dieses Repo) braucht eigenen Gmail-MCP-Server mit
+  OAuth – bewusst NICHT in diesem öffentlichen Repo eingerichtet
+  (Zugangsdaten-Sicherheit). Als offene Idee vermerkt, Use-Case noch zu
+  klären.
