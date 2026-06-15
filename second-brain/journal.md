@@ -11,5 +11,7 @@
   `python3 -m http.server` ist für den Nutzer nicht erreichbar).
 - Entscheidung: Audio-Ausgabe zuerst über eine neue "Jarvis"-Seite mit
   Browser-eigener Web Speech API angehen (läuft im Nutzer-Browser, keine
-  Infrastruktur nötig). Video-Ausgabe und Playwright/Test-Setup vorerst
-  zurückgestellt.
+  Infrastruktur nötig). Video-Ausgabe (Idee verworfen) und Playwright/Test-Setup
+  vorerst zurückgestellt.
+- `jarvis.html` umgesetzt: zeigt Inbox/Projekte/Ideen aus `second-brain/` und
+  liest sie per Web Speech API (Deutsch) vor. HTML-Lint ok.

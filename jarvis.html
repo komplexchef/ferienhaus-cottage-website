@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Jarvis – Second Brain</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f7f3ed;
+      --card: #ffffff;
+      --dark: #1e1a14;
+      --gold: #b8843a;
+      --gold-light: #d4a855;
+      --text: #2e2a22;
+      --muted: #7a6e5f;
+      --border: #ddd4c4;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      padding: 60px 20px 80px;
+    }
+
+    .wrap { max-width: 760px; margin: 0 auto; }
+
+    header { text-align: center; margin-bottom: 16px; }
+    header .pre {
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 400;
+      color: var(--dark);
+    }
+
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin: 32px 0 12px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      background: var(--gold);
+      color: white;
+      border: none;
+      padding: 12px 28px;
+      font-family: 'Jost', sans-serif;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 500;
+      border-radius: 1px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn:hover { background: var(--gold-light); }
+    .btn.speaking { background: var(--gold-light); }
+    .btn-outline {
+      background: transparent;
+      border: 1.5px solid var(--border);
+      color: var(--muted);
+    }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .status {
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 28px 32px;
+      margin-top: 24px;
+    }
+    .card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .card h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 400;
+      color: var(--dark);
+    }
+    .card pre {
+      white-space: pre-wrap;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.95rem;
+      color: var(--text);
+    }
+    .speak-btn {
+      background: none;
+      border: 1.5px solid var(--gold);
+      color: var(--gold);
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 8px 18px;
+      border-radius: 1px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.2s, color 0.2s;
+    }
+    .speak-btn:hover { background: var(--gold); color: white; }
+    .speak-btn.speaking { background: var(--gold); color: white; }
+    .speak-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    footer {
+      text-align: center;
+      margin-top: 48px;
+      font-size: 0.85rem;
+    }
+    footer a { color: var(--gold); text-decoration: none; }
+    footer a:hover { color: var(--gold-light); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="pre">Second Brain</div>
+      <h1>Jarvis</h1>
+    </header>
+
+    <div class="controls">
+      <button class="btn" id="speak-all">🔊 Alles vorlesen</button>
+      <button class="btn btn-outline" id="stop-all">Stopp</button>
+    </div>
+    <p class="status" id="speech-status" hidden>
+      Sprachausgabe wird in diesem Browser leider nicht unterstützt.
+    </p>
+
+    <section class="card" data-source="second-brain/inbox.md">
+      <div class="card-head">
+        <h2>Inbox</h2>
+        <button class="speak-btn">🔊 Vorlesen</button>
+      </div>
+      <pre>Lädt …</pre>
+    </section>
+
+    <section class="card" data-source="second-brain/projects.md">
+      <div class="card-head">
+        <h2>Projekte</h2>
+        <button class="speak-btn">🔊 Vorlesen</button>
+      </div>
+      <pre>Lädt …</pre>
+    </section>
+
+    <section class="card" data-source="second-brain/ideas.md">
+      <div class="card-head">
+        <h2>Ideen</h2>
+        <button class="speak-btn">🔊 Vorlesen</button>
+      </div>
+      <pre>Lädt …</pre>
+    </section>
+
+    <footer>
+      <a href="index.html">&larr; Zur Website</a>
+    </footer>
+  </div>
+
+  <script>
+    function mdToSpeech(markdown) {
+      return markdown
+        .replace(/<!--[\s\S]*?-->/g, '')
+        .replace(/^#+\s*/gm, '')
+        .replace(/\*\*(.*?)\*\*/g, '$1')
+        .replace(/\*(.*?)\*/g, '$1')
+        .replace(/`([^`]*)`/g, '$1')
+        .replace(/^-\s*\[ \]\s*/gm, 'Offen: ')
+        .replace(/^-\s*\[x\]\s*/gmi, 'Erledigt: ')
+        .replace(/^[-*]\s+/gm, '')
+        .replace(/\|/g, ' ')
+        .replace(/^-{3,}\s*$/gm, '')
+        .replace(/\n{2,}/g, '. ')
+        .replace(/\n/g, ', ')
+        .trim();
+    }
+
+    var synth = window.speechSynthesis;
+    var supported = 'speechSynthesis' in window;
+    var speakAllBtn = document.getElementById('speak-all');
+    var stopAllBtn = document.getElementById('stop-all');
+
+    if (!supported) {
+      document.getElementById('speech-status').hidden = false;
+      speakAllBtn.disabled = true;
+      stopAllBtn.disabled = true;
+    }
+
+    function clearSpeakingState() {
+      document.querySelectorAll('.speaking').forEach(function (el) {
+        el.classList.remove('speaking');
+      });
+    }
+
+    function speak(text, btn) {
+      if (!supported || !text.trim()) return;
+      synth.cancel();
+      clearSpeakingState();
+      var utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'de-DE';
+      if (btn) {
+        btn.classList.add('speaking');
+        utterance.onend = function () { btn.classList.remove('speaking'); };
+        utterance.onerror = function () { btn.classList.remove('speaking'); };
+      }
+      synth.speak(utterance);
+    }
+
+    stopAllBtn.addEventListener('click', function () {
+      if (supported) synth.cancel();
+      clearSpeakingState();
+    });
+
+    var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+
+    cards.forEach(function (card) {
+      var src = card.dataset.source;
+      var pre = card.querySelector('pre');
+      var speakBtn = card.querySelector('.speak-btn');
+
+      fetch(src)
+        .then(function (res) {
+          if (!res.ok) throw new Error('nicht gefunden');
+          return res.text();
+        })
+        .then(function (text) {
+          pre.textContent = text.trim();
+          speakBtn.addEventListener('click', function () {
+            speak(mdToSpeech(text), speakBtn);
+          });
+        })
+        .catch(function () {
+          pre.textContent = 'Konnte ' + src + ' nicht laden.';
+          speakBtn.disabled = true;
+        });
+    });
+
+    speakAllBtn.addEventListener('click', function () {
+      if (!supported) return;
+      synth.cancel();
+      Promise.all(
+        cards.map(function (card) {
+          return fetch(card.dataset.source)
+            .then(function (res) { return res.ok ? res.text() : ''; })
+            .catch(function () { return ''; });
+        })
+      ).then(function (texts) {
+        var combined = texts.filter(Boolean).map(mdToSpeech).join('. ');
+        speak(combined, speakAllBtn);
+      });
+    });
+  </script>
+</body>
+</html>
