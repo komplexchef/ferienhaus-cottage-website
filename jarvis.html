@@ -47,6 +47,81 @@
       color: var(--dark);
     }
 
+    /* Settings */
+    .settings-toggle {
+      display: block;
+      margin: 20px auto 0;
+      background: none;
+      border: none;
+      font-family: 'Jost', sans-serif;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 4px 8px;
+      transition: color 0.2s;
+    }
+    .settings-toggle:hover { color: var(--gold); }
+
+    .settings-panel {
+      display: none;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 24px 32px;
+      margin-top: 16px;
+    }
+    .settings-panel.open { display: block; }
+    .settings-panel h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-weight: 400;
+      color: var(--dark);
+      margin-bottom: 6px;
+    }
+    .setting-note {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 18px;
+      line-height: 1.6;
+    }
+    .setting-row {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 14px;
+    }
+    .setting-row label {
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .setting-row input {
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 8px 12px;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.88rem;
+      color: var(--text);
+      background: var(--bg);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .setting-row input:focus { border-color: var(--gold); }
+    .settings-actions { display: flex; gap: 8px; margin-top: 4px; }
+    .el-status {
+      display: inline-block;
+      font-size: 11px;
+      letter-spacing: 1px;
+      margin-left: 8px;
+      color: var(--muted);
+    }
+    .el-status.active { color: #5a8a4a; }
+
+    /* Controls */
     .controls {
       display: flex;
       justify-content: center;
@@ -82,9 +157,12 @@
       text-align: center;
       font-size: 0.85rem;
       color: var(--muted);
-      margin-bottom: 24px;
+      margin-bottom: 8px;
+      min-height: 1.4em;
     }
+    .status.error { color: #b04040; }
 
+    /* Cards */
     .card {
       background: var(--card);
       border: 1px solid var(--border);
@@ -145,36 +223,59 @@
       <h1>Jarvis</h1>
     </header>
 
+    <button class="settings-toggle" id="settings-toggle">&#9881; ElevenLabs</button>
+
+    <div class="settings-panel" id="settings-panel">
+      <h3>Sprachausgabe – ElevenLabs</h3>
+      <p class="setting-note">
+        API-Key und Voice-ID werden nur im Browser gespeichert (localStorage) –
+        nie ins Repository oder ins Netz &#252;bertragen.<br>
+        API-Key: elevenlabs.io &#8250; Profile &#8250; API Keys &nbsp;|&nbsp;
+        Voice-ID: elevenlabs.io &#8250; Voices &#8250; ID kopieren.
+      </p>
+      <div class="setting-row">
+        <label>API Key</label>
+        <input type="password" id="el-api-key" placeholder="sk_..." autocomplete="off" spellcheck="false" />
+      </div>
+      <div class="setting-row">
+        <label>Voice ID <span style="font-weight:300;text-transform:none;letter-spacing:0">(Standard: Charlotte XB0fDUnXU5powFXDhCwa)</span></label>
+        <input type="text" id="el-voice-id" placeholder="XB0fDUnXU5powFXDhCwa" autocomplete="off" spellcheck="false" />
+      </div>
+      <div class="settings-actions">
+        <button class="btn" id="settings-save">Speichern</button>
+        <button class="btn btn-outline" id="settings-clear">Entfernen</button>
+        <span class="el-status" id="el-status"></span>
+      </div>
+    </div>
+
     <div class="controls">
-      <button class="btn" id="speak-all">🔊 Alles vorlesen</button>
+      <button class="btn" id="speak-all">&#128266; Alles vorlesen</button>
       <button class="btn btn-outline" id="stop-all">Stopp</button>
     </div>
-    <p class="status" id="speech-status" hidden>
-      Sprachausgabe wird in diesem Browser leider nicht unterstützt.
-    </p>
+    <p class="status" id="speech-status"></p>
 
     <section class="card" data-source="second-brain/inbox.md">
       <div class="card-head">
         <h2>Inbox</h2>
-        <button class="speak-btn">🔊 Vorlesen</button>
+        <button class="speak-btn">&#128266; Vorlesen</button>
       </div>
-      <pre>Lädt …</pre>
+      <pre>L&#228;dt &#8230;</pre>
     </section>
 
     <section class="card" data-source="second-brain/projects.md">
       <div class="card-head">
         <h2>Projekte</h2>
-        <button class="speak-btn">🔊 Vorlesen</button>
+        <button class="speak-btn">&#128266; Vorlesen</button>
       </div>
-      <pre>Lädt …</pre>
+      <pre>L&#228;dt &#8230;</pre>
     </section>
 
     <section class="card" data-source="second-brain/ideas.md">
       <div class="card-head">
         <h2>Ideen</h2>
-        <button class="speak-btn">🔊 Vorlesen</button>
+        <button class="speak-btn">&#128266; Vorlesen</button>
       </div>
-      <pre>Lädt …</pre>
+      <pre>L&#228;dt &#8230;</pre>
     </section>
 
     <footer>
@@ -183,9 +284,25 @@
   </div>
 
   <script>
+    var EL_KEY_LS   = 'jarvis_el_key';
+    var EL_VOICE_LS = 'jarvis_el_voice';
+    var DEFAULT_VOICE = 'XB0fDUnXU5powFXDhCwa';
+
+    // Single audio element – reused for all ElevenLabs playback
+    var audioEl = new Audio();
+    var synth = window.speechSynthesis;
+    var nativeOk = 'speechSynthesis' in window;
+
+    // Flag to abort "Alles vorlesen" loop early
+    var stopRequested = false;
+
+    // ------------------------------------------------------------------ helpers
+
     function mdToSpeech(markdown) {
       return markdown
         .replace(/<!--[\s\S]*?-->/g, '')
+        // Strip Unicode arrows and other symbols that break cp1252 or TTS
+        .replace(/[\u2190-\u21FF\u2600-\u26FF\u2700-\u27BF]/g, '')
         .replace(/^#+\s*/gm, '')
         .replace(/\*\*(.*?)\*\*/g, '$1')
         .replace(/\*(.*?)\*/g, '$1')
@@ -200,15 +317,10 @@
         .trim();
     }
 
-    var synth = window.speechSynthesis;
-    var supported = 'speechSynthesis' in window;
-    var speakAllBtn = document.getElementById('speak-all');
-    var stopAllBtn = document.getElementById('stop-all');
-
-    if (!supported) {
-      document.getElementById('speech-status').hidden = false;
-      speakAllBtn.disabled = true;
-      stopAllBtn.disabled = true;
+    function setStatus(msg, isError) {
+      var el = document.getElementById('speech-status');
+      el.textContent = msg;
+      el.className = 'status' + (isError ? ' error' : '');
     }
 
     function clearSpeakingState() {
@@ -217,30 +329,178 @@
       });
     }
 
-    function speak(text, btn) {
-      if (!supported || !text.trim()) return;
-      synth.cancel();
-      clearSpeakingState();
-      var utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'de-DE';
-      if (btn) {
-        btn.classList.add('speaking');
-        utterance.onend = function () { btn.classList.remove('speaking'); };
-        utterance.onerror = function () { btn.classList.remove('speaking'); };
+    // ------------------------------------------------------------------ ElevenLabs
+
+    function elKey()   { return localStorage.getItem(EL_KEY_LS) || ''; }
+    function elVoice() { return localStorage.getItem(EL_VOICE_LS) || DEFAULT_VOICE; }
+
+    function updateElStatus() {
+      var s = document.getElementById('el-status');
+      if (elKey()) {
+        s.textContent = 'ElevenLabs aktiv';
+        s.className = 'el-status active';
+      } else {
+        s.textContent = 'kein Key – Browser-Stimme aktiv';
+        s.className = 'el-status';
       }
-      synth.speak(utterance);
     }
 
-    stopAllBtn.addEventListener('click', function () {
-      if (supported) synth.cancel();
+    // Returns a Promise that resolves when the audio finishes (or errors)
+    function speakElevenLabsText(text) {
+      return new Promise(function (resolve) {
+        var key = elKey();
+        var voiceId = elVoice();
+
+        fetch('https://api.elevenlabs.io/v1/text-to-speech/' + voiceId, {
+          method: 'POST',
+          headers: {
+            'xi-api-key': key,
+            'Content-Type': 'application/json',
+            'Accept': 'audio/mpeg'
+          },
+          body: JSON.stringify({
+            text: text,
+            model_id: 'eleven_multilingual_v2',
+            voice_settings: { stability: 0.5, similarity_boost: 0.75 }
+          })
+        })
+        .then(function (res) {
+          if (!res.ok) {
+            return res.text().then(function (body) {
+              throw new Error('ElevenLabs ' + res.status + ': ' + body.slice(0, 120));
+            });
+          }
+          return res.blob();
+        })
+        .then(function (blob) {
+          var url = URL.createObjectURL(blob);
+          audioEl.src = url;
+          audioEl.onended = function () {
+            URL.revokeObjectURL(url);
+            resolve();
+          };
+          audioEl.onerror = function () {
+            URL.revokeObjectURL(url);
+            setStatus('Audio-Wiedergabefehler.', true);
+            resolve();
+          };
+          // play() returns a Promise; catch autoplay rejection
+          var playPromise = audioEl.play();
+          if (playPromise !== undefined) {
+            playPromise.catch(function (err) {
+              setStatus('Autoplay blockiert – bitte auf "Alles vorlesen" klicken.', true);
+              URL.revokeObjectURL(url);
+              resolve();
+            });
+          }
+        })
+        .catch(function (err) {
+          setStatus(err.message, true);
+          resolve();
+        });
+      });
+    }
+
+    async function speakWithElevenLabs(text, btn) {
+      stopRequested = false;
+      audioEl.pause();
       clearSpeakingState();
+      setStatus('');
+      if (btn) btn.classList.add('speaking');
+      await speakElevenLabsText(text);
+      if (btn) btn.classList.remove('speaking');
+    }
+
+    async function speakAllWithElevenLabs(texts, allBtn) {
+      stopRequested = false;
+      audioEl.pause();
+      clearSpeakingState();
+      setStatus('');
+      if (allBtn) allBtn.classList.add('speaking');
+      for (var i = 0; i < texts.length; i++) {
+        if (stopRequested) break;
+        setStatus((i + 1) + ' / ' + texts.length + ' …');
+        await speakElevenLabsText(texts[i]);
+      }
+      setStatus('');
+      if (allBtn) allBtn.classList.remove('speaking');
+    }
+
+    // ------------------------------------------------------------------ Native (Web Speech API)
+
+    function speakNative(text, btn) {
+      if (!nativeOk || !text.trim()) return;
+      synth.cancel();
+      clearSpeakingState();
+      var utt = new SpeechSynthesisUtterance(text);
+      utt.lang = 'de-DE';
+      if (btn) {
+        btn.classList.add('speaking');
+        utt.onend   = function () { btn.classList.remove('speaking'); };
+        utt.onerror = function () { btn.classList.remove('speaking'); };
+      }
+      synth.speak(utt);
+    }
+
+    // ------------------------------------------------------------------ Dispatcher
+
+    function speak(text, btn) {
+      if (elKey()) {
+        speakWithElevenLabs(text, btn);
+      } else {
+        speakNative(text, btn);
+      }
+    }
+
+    // ------------------------------------------------------------------ Settings UI
+
+    document.getElementById('settings-toggle').addEventListener('click', function () {
+      var panel = document.getElementById('settings-panel');
+      var isOpen = panel.classList.toggle('open');
+      if (isOpen) {
+        document.getElementById('el-api-key').value   = elKey();
+        document.getElementById('el-voice-id').value  = localStorage.getItem(EL_VOICE_LS) || '';
+        updateElStatus();
+      }
     });
 
-    var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+    document.getElementById('settings-save').addEventListener('click', function () {
+      var key   = document.getElementById('el-api-key').value.trim();
+      var voice = document.getElementById('el-voice-id').value.trim();
+      if (key)   localStorage.setItem(EL_KEY_LS, key);
+      if (voice) localStorage.setItem(EL_VOICE_LS, voice);
+      updateElStatus();
+      setStatus(key ? 'ElevenLabs gespeichert.' : 'Bitte API-Key eingeben.');
+    });
 
-    cards.forEach(function (card) {
-      var src = card.dataset.source;
-      var pre = card.querySelector('pre');
+    document.getElementById('settings-clear').addEventListener('click', function () {
+      localStorage.removeItem(EL_KEY_LS);
+      localStorage.removeItem(EL_VOICE_LS);
+      document.getElementById('el-api-key').value  = '';
+      document.getElementById('el-voice-id').value = '';
+      updateElStatus();
+      setStatus('ElevenLabs-Daten entfernt. Browser-Stimme aktiv.');
+    });
+
+    // ------------------------------------------------------------------ Stop
+
+    document.getElementById('stop-all').addEventListener('click', function () {
+      stopRequested = true;
+      audioEl.pause();
+      audioEl.src = '';
+      if (nativeOk) synth.cancel();
+      clearSpeakingState();
+      setStatus('');
+    });
+
+    // ------------------------------------------------------------------ Cards
+
+    var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+    var cardTexts = {}; // cache fetched text per card index
+
+    cards.forEach(function (card, idx) {
+      var src     = card.dataset.source;
+      var pre     = card.querySelector('pre');
       var speakBtn = card.querySelector('.speak-btn');
 
       fetch(src)
@@ -250,8 +510,10 @@
         })
         .then(function (text) {
           pre.textContent = text.trim();
+          cardTexts[idx]  = text;
           speakBtn.addEventListener('click', function () {
-            speak(mdToSpeech(text), speakBtn);
+            var processed = mdToSpeech(text);
+            speak(processed, speakBtn);
           });
         })
         .catch(function () {
@@ -260,19 +522,33 @@
         });
     });
 
-    speakAllBtn.addEventListener('click', function () {
-      if (!supported) return;
-      synth.cancel();
-      Promise.all(
-        cards.map(function (card) {
-          return fetch(card.dataset.source)
-            .then(function (res) { return res.ok ? res.text() : ''; })
-            .catch(function () { return ''; });
-        })
-      ).then(function (texts) {
-        var combined = texts.filter(Boolean).map(mdToSpeech).join('. ');
-        speak(combined, speakAllBtn);
-      });
+    // ------------------------------------------------------------------ Alles vorlesen
+
+    document.getElementById('speak-all').addEventListener('click', function () {
+      var allBtn = this;
+      var texts = cards.map(function (_, idx) {
+        return cardTexts[idx] ? mdToSpeech(cardTexts[idx]) : '';
+      }).filter(Boolean);
+
+      if (!texts.length) return;
+
+      if (elKey()) {
+        speakAllWithElevenLabs(texts, allBtn);
+      } else {
+        if (!nativeOk) {
+          setStatus('Sprachausgabe wird in diesem Browser nicht unterstützt.', true);
+          return;
+        }
+        synth.cancel();
+        clearSpeakingState();
+        allBtn.classList.add('speaking');
+        var combined = texts.join('. ');
+        var utt = new SpeechSynthesisUtterance(combined);
+        utt.lang = 'de-DE';
+        utt.onend   = function () { allBtn.classList.remove('speaking'); };
+        utt.onerror = function () { allBtn.classList.remove('speaking'); };
+        synth.speak(utt);
+      }
     });
   </script>
 </body>
