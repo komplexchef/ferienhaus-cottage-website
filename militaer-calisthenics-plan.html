@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Militär-Calisthenics-Plan zum Abnehmen zuhause</title>
+  <meta name="description" content="Kostenloser 4-Wochen-Trainingsplan mit Calisthenics und HIIT zum Abnehmen zuhause – ohne Geräte, nach militärischem Drill-Prinzip." />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f7f3ed;
+      --card: #ffffff;
+      --dark: #1e1a14;
+      --gold: #b8843a;
+      --gold-light: #d4a855;
+      --sage: #7a8c72;
+      --sage-dark: #545f4d;
+      --text: #2e2a22;
+      --muted: #7a6e5f;
+      --border: #ddd4c4;
+      --warm: #f0ebe2;
+      --highlight: #fdf6ec;
+      --danger: #a5453a;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+    }
+
+    a { color: var(--sage-dark); }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: rgba(30,26,20,0.97);
+      z-index: 100;
+      padding: 16px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(122,140,114,0.35);
+    }
+    nav .logo {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.05rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--sage);
+    }
+    nav a.back {
+      text-decoration: none;
+      color: rgba(255,255,255,0.7);
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    nav a.back:hover { color: var(--gold-light); }
+
+    /* HERO */
+    .hero {
+      margin-top: 64px;
+      padding: 90px 40px 70px;
+      background: linear-gradient(rgba(30,26,20,0.88), rgba(30,26,20,0.92)),
+        repeating-linear-gradient(135deg, rgba(122,140,114,0.15) 0px, rgba(122,140,114,0.15) 2px, transparent 2px, transparent 14px);
+      color: white;
+      text-align: center;
+      position: relative;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--sage), transparent);
+    }
+    .hero-pre {
+      font-family: 'Oswald', sans-serif;
+      font-size: 12px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 18px;
+      font-weight: 600;
+    }
+    .hero h1 {
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      line-height: 1.2;
+      margin-bottom: 18px;
+    }
+    .hero h1 em { font-style: normal; color: var(--gold-light); }
+    .hero-rule { width: 60px; height: 2px; background: var(--sage); margin: 0 auto 22px; }
+    .hero p.lead-hero {
+      max-width: 620px;
+      margin: 0 auto;
+      color: rgba(255,255,255,0.65);
+      font-size: 14.5px;
+    }
+    .hero-badges {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 28px;
+    }
+    .hero-badge {
+      border: 1px solid rgba(122,140,114,0.5);
+      color: var(--sage);
+      font-size: 10.5px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 7px 16px;
+      border-radius: 1px;
+      font-weight: 500;
+    }
+
+    /* SECTIONS */
+    .section { padding: 70px 40px; max-width: 1000px; margin: 0 auto; }
+    .section-label {
+      font-family: 'Oswald', sans-serif;
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--sage-dark);
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    h2 {
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(1.5rem, 2.6vw, 2.2rem);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--dark);
+      margin-bottom: 20px;
+      line-height: 1.25;
+    }
+    .lead {
+      font-size: 15px;
+      line-height: 1.9;
+      color: var(--muted);
+      max-width: 720px;
+      margin-bottom: 34px;
+    }
+    .callout {
+      background: var(--dark);
+      color: rgba(255,255,255,0.85);
+      border-left: 4px solid var(--sage);
+      padding: 20px 24px;
+      font-size: 14px;
+      margin: 24px 0 40px;
+    }
+    .callout strong { color: var(--gold-light); }
+
+    /* PRINZIPIEN GRID */
+    .principles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 10px;
+    }
+    .principle {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--sage);
+      border-radius: 2px;
+      padding: 22px;
+      box-shadow: 0 1px 8px rgba(30,26,20,0.05);
+    }
+    .principle h3 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--dark);
+      margin-bottom: 8px;
+    }
+    .principle p { font-size: 13px; color: var(--muted); }
+
+    /* WOCHENPLAN TABLE */
+    .week-table-wrap { overflow-x: auto; margin-top: 20px; }
+    table.week-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 620px;
+      background: var(--card);
+    }
+    table.week-table th, table.week-table td {
+      border: 1px solid var(--border);
+      padding: 14px 16px;
+      font-size: 13.5px;
+      text-align: left;
+      vertical-align: top;
+    }
+    table.week-table th {
+      background: var(--dark);
+      color: var(--sage);
+      font-family: 'Oswald', sans-serif;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    table.week-table td.day-name { font-weight: 500; color: var(--dark); white-space: nowrap; }
+    table.week-table tr:nth-child(even) td { background: var(--highlight); }
+    .tag-rest { color: var(--sage-dark); font-weight: 500; }
+
+    /* WORKOUT CARDS */
+    .workout-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 30px;
+      margin-bottom: 22px;
+      box-shadow: 0 1px 8px rgba(30,26,20,0.05);
+    }
+    .workout-card h3 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--dark);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .workout-card .sub {
+      font-size: 12px;
+      color: var(--gold);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+      font-weight: 500;
+    }
+    ul.exercise-list { list-style: none; }
+    ul.exercise-list li {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 10px 0;
+      border-bottom: 1px dashed var(--border);
+      font-size: 13.5px;
+      color: var(--text);
+    }
+    ul.exercise-list li:last-child { border-bottom: none; }
+    ul.exercise-list li .ex-name { font-weight: 500; }
+    ul.exercise-list li .ex-reps {
+      color: var(--sage-dark);
+      font-weight: 600;
+      white-space: nowrap;
+      font-size: 12.5px;
+    }
+    .note-line {
+      margin-top: 16px;
+      font-size: 12.5px;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    /* PROGRESSION */
+    .progression-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 10px;
+    }
+    .week-card {
+      background: var(--dark);
+      color: rgba(255,255,255,0.8);
+      border-radius: 2px;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .week-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--sage), transparent);
+    }
+    .week-card strong {
+      display: block;
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.4rem;
+      color: var(--gold-light);
+      margin-bottom: 6px;
+    }
+    .week-card span.wk-label {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--sage);
+    }
+    .week-card p { font-size: 12.5px; margin-top: 10px; color: rgba(255,255,255,0.55); }
+
+    /* ERNÄHRUNG */
+    .nutrition-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-top: 10px;
+    }
+    .nutrition-card {
+      background: var(--warm);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 22px;
+    }
+    .nutrition-card h4 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 12px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+    .nutrition-card p { font-size: 13px; color: var(--muted); }
+
+    /* SICHERHEIT */
+    .safety-box {
+      background: rgba(165,69,58,0.08);
+      border: 1px solid rgba(165,69,58,0.3);
+      border-radius: 2px;
+      padding: 24px 28px;
+      margin-top: 20px;
+    }
+    .safety-box h4 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 12px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--danger);
+      margin-bottom: 10px;
+    }
+    .safety-box p { font-size: 13px; color: var(--text); }
+
+    /* FOOTER */
+    footer {
+      background: #111008;
+      color: rgba(255,255,255,0.25);
+      text-align: center;
+      padding: 30px 20px;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    footer a { color: var(--sage); text-decoration: none; }
+
+    @media (max-width: 768px) {
+      .section { padding: 50px 20px; }
+      nav { padding: 14px 20px; }
+      ul.exercise-list li { flex-direction: column; gap: 2px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Drill &amp; Abnehmen</div>
+  <a href="index.html" class="back">← Zur Startseite</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-pre">Bodyweight · Disziplin · Zuhause</div>
+  <h1>Dein Militär-<em>Calisthenics</em>-Plan<br>zum Abnehmen zuhause</h1>
+  <div class="hero-rule"></div>
+  <p class="lead-hero">Kein Fitnessstudio, keine Geräte, keine Ausreden. Nur ein 4-Wochen-Programm aus Calisthenics und HIIT-Cardio nach militärischem Drill-Prinzip – für maximalen Kalorienverbrauch mit deinem eigenen Körpergewicht.</p>
+  <div class="hero-badges">
+    <span class="hero-badge">0 € Ausrüstung</span>
+    <span class="hero-badge">4 Wochen Programm</span>
+    <span class="hero-badge">20–40 Min/Tag</span>
+    <span class="hero-badge">6 Tage Training</span>
+  </div>
+</div>
+
+<!-- PRINZIPIEN -->
+<div class="section">
+  <div class="section-label">Die Grundordnung</div>
+  <h2>5 Prinzipien des Drills</h2>
+  <p class="lead">Militärisches Training lebt nicht von komplizierten Geräten, sondern von Konsequenz. Diese fünf Regeln entscheiden über deinen Erfolg – nicht die Übungen selbst.</p>
+  <div class="principles-grid">
+    <div class="principle">
+      <h3>01 · Kein Tag ohne Bewegung</h3>
+      <p>An Ruhetagen wird aktiv erholt (Spaziergang, Mobility) statt komplett stillzustehen.</p>
+    </div>
+    <div class="principle">
+      <h3>02 · Kaloriendefizit schlägt Bauchmuskel-Mythen</h3>
+      <p>Abnehmen passiert in der Küche. Das Training formt den Körper, das Defizit lässt das Fett fallen.</p>
+    </div>
+    <div class="principle">
+      <h3>03 · Technik vor Tempo</h3>
+      <p>Lieber 8 saubere Liegestütze als 20 mit durchhängender Hüfte. Qualität schützt vor Verletzung.</p>
+    </div>
+    <div class="principle">
+      <h3>04 · Progressive Überlastung</h3>
+      <p>Jede Woche etwas mehr: eine Wiederholung, ein Satz, fünf Sekunden länger halten.</p>
+    </div>
+    <div class="principle">
+      <h3>05 · Schlaf ist Befehl, nicht Vorschlag</h3>
+      <p>7–8 Stunden Schlaf sind Teil des Trainingsplans, nicht optional.</p>
+    </div>
+  </div>
+  <div class="callout">
+    <strong>Startbefehl:</strong> Miss vor Woche 1 Gewicht, Taille und mache ein Foto. Zahlen und Bilder lügen nicht – sie sind dein einziger verlässlicher Fortschrittsbericht.
+  </div>
+</div>
+
+<!-- WOCHENPLAN -->
+<div class="section">
+  <div class="section-label">Wochenstruktur</div>
+  <h2>Der 6-Tage-Drillplan</h2>
+  <p class="lead">Sechs Trainingstage, ein Ruhetag. Jeder Tag hat einen klaren Fokus, damit sich Muskelgruppen erholen können, während du trotzdem täglich Kalorien verbrennst.</p>
+  <div class="week-table-wrap">
+    <table class="week-table">
+      <thead>
+        <tr><th>Tag</th><th>Fokus</th><th>Dauer</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="day-name">Montag</td><td>Push – Brust, Schultern, Trizeps</td><td>25–30 Min</td></tr>
+        <tr><td class="day-name">Dienstag</td><td>HIIT-Cardio (Tabata)</td><td>20 Min</td></tr>
+        <tr><td class="day-name">Mittwoch</td><td>Pull – Rücken, Bizeps</td><td>25–30 Min</td></tr>
+        <tr><td class="day-name">Donnerstag</td><td>Core &amp; Bauch</td><td>20 Min</td></tr>
+        <tr><td class="day-name">Freitag</td><td>Legs – Beine, Po</td><td>25–30 Min</td></tr>
+        <tr><td class="day-name">Samstag</td><td>Ganzkörper-Zirkel (Militär-Finisher)</td><td>30–40 Min</td></tr>
+        <tr><td class="day-name">Sonntag</td><td class="tag-rest">Ruhetag – aktive Erholung, 20–30 Min Spaziergang</td><td>–</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- TAGESPLÄNE -->
+<div class="section">
+  <div class="section-label">Die Einheiten im Detail</div>
+  <h2>Trainingstage 1–6</h2>
+
+  <div class="workout-card">
+    <h3>🎯 Push-Day <span style="font-size:11px;color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0;">– Montag</span></h3>
+    <div class="sub">4 Runden · 60–90 Sek. Pause zwischen Runden</div>
+    <ul class="exercise-list">
+      <li><span class="ex-name">Liegestütze</span><span class="ex-reps">12–20 Wdh.</span></li>
+      <li><span class="ex-name">Diamant-Liegestütze</span><span class="ex-reps">8–12 Wdh.</span></li>
+      <li><span class="ex-name">Dips am Stuhl/Couchrand</span><span class="ex-reps">10–15 Wdh.</span></li>
+      <li><span class="ex-name">Schulterdrücken im Handstand-Lehnstand (an der Wand)</span><span class="ex-reps">6–10 Wdh.</span></li>
+      <li><span class="ex-name">Plank-to-Push-up</span><span class="ex-reps">10 Wdh.</span></li>
+    </ul>
+    <p class="note-line">Zu schwer? Liegestütze auf Knien. Zu leicht? Füße erhöhen (auf Stuhl/Sofa).</p>
+  </div>
+
+  <div class="workout-card">
+    <h3>🔥 HIIT-Cardio <span style="font-size:11px;color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0;">– Dienstag, Tabata-Format</span></h3>
+    <div class="sub">8 Runden · 20 Sek. volle Power / 10 Sek. Pause, dann Übung wechseln</div>
+    <ul class="exercise-list">
+      <li><span class="ex-name">Burpees</span><span class="ex-reps">4 Runden</span></li>
+      <li><span class="ex-name">Mountain Climbers</span><span class="ex-reps">4 Runden</span></li>
+      <li><span class="ex-name">Jumping Jacks</span><span class="ex-reps">4 Runden</span></li>
+      <li><span class="ex-name">Hoher Kniehub auf der Stelle</span><span class="ex-reps">4 Runden</span></li>
+    </ul>
+    <p class="note-line">Gesamtdauer: 2 Blöcke à 4 Minuten mit 2 Min. Pause dazwischen. Puls hoch halten!</p>
+  </div>
+
+  <div class="workout-card">
+    <h3>🎯 Pull-Day <span style="font-size:11px;color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0;">– Mittwoch</span></h3>
+    <div class="sub">4 Runden · 60–90 Sek. Pause zwischen Runden</div>
+    <ul class="exercise-list">
+      <li><span class="ex-name">Klimmzüge (falls Stange vorhanden)</span><span class="ex-reps">5–10 Wdh.</span></li>
+      <li><span class="ex-name">Superman-Rücken-Extension</span><span class="ex-reps">15 Wdh.</span></li>
+      <li><span class="ex-name">Tisch-Rows (unter stabilem Tisch ziehen)</span><span class="ex-reps">12–15 Wdh.</span></li>
+      <li><span class="ex-name">Handtuch-Rudern (Handtuch um Türgriff/Stange)</span><span class="ex-reps">12–15 Wdh.</span></li>
+      <li><span class="ex-name">Retraktion Schulterblätter (Band/Handtuch)</span><span class="ex-reps">15 Wdh.</span></li>
+    </ul>
+    <p class="note-line">Keine Klimmzugstange? Negativ-Klimmzüge von einem Stuhl aus langsam absenken.</p>
+  </div>
+
+  <div class="workout-card">
+    <h3>🎯 Core-Day <span style="font-size:11px;color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0;">– Donnerstag</span></h3>
+    <div class="sub">3 Runden · 45 Sek. Pause zwischen Übungen</div>
+    <ul class="exercise-list">
+      <li><span class="ex-name">Plank</span><span class="ex-reps">45–60 Sek.</span></li>
+      <li><span class="ex-name">Fahrrad-Crunches</span><span class="ex-reps">20 Wdh.</span></li>
+      <li><span class="ex-name">Beinheben liegend</span><span class="ex-reps">15 Wdh.</span></li>
+      <li><span class="ex-name">Russian Twists</span><span class="ex-reps">20 Wdh.</span></li>
+      <li><span class="ex-name">Seitplank pro Seite</span><span class="ex-reps">30–45 Sek.</span></li>
+    </ul>
+    <p class="note-line">Bauchfett verschwindet nicht gezielt durch Core-Training – entscheidend bleibt das Kaloriendefizit. Core-Training formt die Muskulatur darunter.</p>
+  </div>
+
+  <div class="workout-card">
+    <h3>🎯 Leg-Day <span style="font-size:11px;color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0;">– Freitag</span></h3>
+    <div class="sub">4 Runden · 60–90 Sek. Pause zwischen Runden</div>
+    <ul class="exercise-list">
+      <li><span class="ex-name">Kniebeugen</span><span class="ex-reps">20 Wdh.</span></li>
+      <li><span class="ex-name">Ausfallschritte pro Seite</span><span class="ex-reps">12 Wdh.</span></li>
+      <li><span class="ex-name">Sprungkniebeugen (Squat Jumps)</span><span class="ex-reps">12 Wdh.</span></li>
+      <li><span class="ex-name">Wandsitz (Wall Sit)</span><span class="ex-reps">45–60 Sek.</span></li>
+      <li><span class="ex-name">Wadenheben</span><span class="ex-reps">20 Wdh.</span></li>
+    </ul>
+    <p class="note-line">Knieprobleme? Ausfallschritte durch Beinheben zur Seite ersetzen.</p>
+  </div>
+
+  <div class="workout-card">
+    <h3>🎯 Ganzkörper-Finisher <span style="font-size:11px;color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0;">– Samstag, „Boot Camp“</span></h3>
+    <div class="sub">5 Runden im Kreislauf, keine Pause zwischen Übungen, 90 Sek. Pause nach jeder Runde</div>
+    <ul class="exercise-list">
+      <li><span class="ex-name">Burpees</span><span class="ex-reps">10 Wdh.</span></li>
+      <li><span class="ex-name">Liegestütze</span><span class="ex-reps">10 Wdh.</span></li>
+      <li><span class="ex-name">Kniebeugen</span><span class="ex-reps">15 Wdh.</span></li>
+      <li><span class="ex-name">Plank</span><span class="ex-reps">30 Sek.</span></li>
+      <li><span class="ex-name">Hampelmänner (Jumping Jacks)</span><span class="ex-reps">20 Wdh.</span></li>
+    </ul>
+    <p class="note-line">Der anstrengendste Tag der Woche – bewusst so gewollt. Danach: Sonntag Ruhetag verdient.</p>
+  </div>
+</div>
+
+<!-- PROGRESSION -->
+<div class="section">
+  <div class="section-label">Steigerung</div>
+  <h2>4-Wochen-Progression</h2>
+  <p class="lead">Der Plan bleibt gleich – die Belastung steigt. So bleibt der Körper gezwungen, sich stetig anzupassen (progressive Überlastung).</p>
+  <div class="progression-grid">
+    <div class="week-card">
+      <span class="wk-label">Woche 1</span>
+      <strong>Eingewöhnung</strong>
+      <p>Alle Übungen mit korrekter Technik, moderate Wiederholungszahl laut Plan. Fokus: Bewegungsmuster lernen.</p>
+    </div>
+    <div class="week-card">
+      <span class="wk-label">Woche 2</span>
+      <strong>+2 Wdh. pro Übung</strong>
+      <p>Jede Übung um 2 Wiederholungen bzw. 10 Sekunden (bei Halteübungen) steigern.</p>
+    </div>
+    <div class="week-card">
+      <span class="wk-label">Woche 3</span>
+      <strong>+1 Runde</strong>
+      <p>Bei allen Kraft-Workouts eine zusätzliche Runde anhängen. Pausenzeiten um 10–15 Sek. verkürzen.</p>
+    </div>
+    <div class="week-card">
+      <span class="wk-label">Woche 4</span>
+      <strong>Belastungstest</strong>
+      <p>Maximale Wiederholungen pro Übung testen und mit Woche 1 vergleichen – danach Zyklus wiederholen.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ERNÄHRUNG -->
+<div class="section">
+  <div class="section-label">Versorgung</div>
+  <h2>Ernährung zum Abnehmen</h2>
+  <p class="lead">Ohne Ernährungsdefizit bleibt jedes Training Zeitverschwendung fürs Abnehmen. Diese vier Regeln reichen für den Anfang völlig aus.</p>
+  <div class="nutrition-grid">
+    <div class="nutrition-card">
+      <h4>Kaloriendefizit</h4>
+      <p>Ca. 300–500 kcal unter deinem Tagesbedarf – nachhaltig statt radikal, damit du es 4 Wochen und länger durchhältst.</p>
+    </div>
+    <div class="nutrition-card">
+      <h4>Eiweiß priorisieren</h4>
+      <p>Ca. 1,6–2 g Eiweiß pro kg Körpergewicht schützt deine Muskulatur, während das Fett schmilzt.</p>
+    </div>
+    <div class="nutrition-card">
+      <h4>Wasser statt Kalorien trinken</h4>
+      <p>2–3 Liter Wasser täglich. Softdrinks und Säfte raus – flüssige Kalorien sind der stille Fortschrittskiller.</p>
+    </div>
+    <div class="nutrition-card">
+      <h4>Vollwertig statt verarbeitet</h4>
+      <p>Gemüse, Obst, Vollkorn, mageres Fleisch/Fisch/Hülsenfrüchte. 80 % Regel: Wenn 80 % stimmen, verzeihen 20 % Ausnahmen.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SICHERHEIT -->
+<div class="section">
+  <div class="section-label">Wichtiger Hinweis</div>
+  <h2>Sicherheit geht vor Drill</h2>
+  <div class="safety-box">
+    <h4>⚠️ Vor dem Start beachten</h4>
+    <p>Dieser Plan ersetzt keine medizinische Beratung. Bei Vorerkrankungen, Herz-Kreislauf-Problemen, Gelenkbeschwerden, Schwangerschaft oder längerer Trainingspause vorher ärztlich abklären lassen. Bei Schmerzen (nicht zu verwechseln mit Muskelkater) sofort abbrechen. Jede Einheit beginnt mit 5 Minuten Aufwärmen (z. B. lockeres Hampelmann-Tempo, Armkreisen, Hüftkreisen) und endet mit 5 Minuten Dehnen.</p>
+  </div>
+</div>
+
+<footer>
+  <p>Militär-Calisthenics-Plan · Zum eigenen Gebrauch · <a href="index.html">Zurück zur Startseite</a></p>
+</footer>
+
+</body>
+</html>
