@@ -57,8 +57,46 @@ Wichtige Optionen:
 | `--max N` | Nur die ersten N Bilder, gut zum Ausprobieren. |
 | `--ziele datei.json` | Eigene Zielordner je Kategorie, siehe `ziele.beispiel.json`. Platzhalter: `{jahr}`, `{monat}`, `{ort}`. |
 | `--nicht-rekursiv` | Unterordner nicht durchsuchen. |
+| `--gateway URL` | Über ein lokales Gateway (OmniRoute) statt direkt bei Anthropic, z. B. `http://localhost:20128`. Alternativ `OMNIROUTE_URL`. |
+| `--modell ID` | Modell festlegen (Standard: Claude direkt, bzw. `auto` über das Gateway). |
 | `--effort low/medium/high` | Wie gründlich Claude nachdenkt. `low` reicht meistens, `medium` hilft bei schwer lesbaren Belegen. |
 | `--ausgabe ORDNER` | Wohin Berichte und Cache geschrieben werden. |
+
+## Über OmniRoute (zentral vom eigenen Rechner)
+
+Statt direkt bei Anthropic kann der Bildscanner alle Anfragen über ein lokales
+[OmniRoute](https://github.com/diegosouzapw/OmniRoute)-Gateway schicken. Dann laufen
+Dropbox-Zugriff und Bildanalyse komplett auf deinem Rechner, und OmniRoute entscheidet,
+welcher Anbieter antwortet, inklusive Auto-Fallback, wenn ein Kontingent leer ist.
+
+```bash
+# 1) OmniRoute installieren und starten (braucht Node)
+npm install -g omniroute
+omniroute                                  # Dashboard: http://localhost:20128
+
+# 2) Prüfen, ob das Gateway antwortet – erst danach weiter
+curl http://localhost:20128/v1/chat/completions -H "Content-Type: application/json" \
+  -d '{"model":"auto","messages":[{"role":"user","content":"Sag Hallo."}]}'
+
+# 3) Im Dashboard Anbieter verbinden (Providers) und unter "Endpoints" den OmniRoute-Schlüssel holen
+export OMNIROUTE_URL=http://localhost:20128
+export OMNIROUTE_API_KEY=...               # OmniRoute-Schlüssel, NICHT der eines Anbieters
+
+# 4) Bildscanner über das Gateway laufen lassen
+python bildscanner.py dropbox "/Ablage-Hennig/70_Urlaub_Freizeit/Kamera-Uploads" --max 20
+python bildscanner.py dropbox "/…/Kamera-Uploads" --modell auto/cheap   # oder ein festes Modell
+```
+
+Wichtig:
+
+- **Das Modell muss Bilder verstehen.** Der Scanner schickt Fotos. Landet `auto` bei einem
+  reinen Textmodell, kommt Unsinn oder ein Fehler zurück. Im Zweifel mit `--modell` ein
+  bildfähiges Modell fest einstellen.
+- **Im Bericht steht pro Bild, welches Modell geantwortet hat** (Zeile „Modell“ und Spalte
+  in `ergebnisse.csv`). So sieht man, ob der Fallback auf ein schwächeres Modell gesprungen ist.
+- Ohne Gateway nutzt das Tool Claude direkt mit festem JSON-Schema. Über das Gateway wird das
+  JSON per Anweisung angefordert und tolerant ausgelesen, weil nicht jedes Modell Schemata kennt.
+- Schlüssel nur als Umgebungsvariable setzen, nie in eine Datei im Repo schreiben.
 
 ## Ausgabe
 

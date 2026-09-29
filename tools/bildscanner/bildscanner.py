@@ -225,17 +225,44 @@ def bild_vorbereiten(daten: bytes) -> tuple[Image.Image, bytes, str]:
 # --------------------------------------------------------------------------- Claude
 
 class Klassifizierer:
-    def __init__(self, effort: str = "low"):
+    """Direkt bei Anthropic (Standard) oder über ein lokales Gateway wie OmniRoute.
+
+    Gateway-Modus: Die Anfrage bleibt im Anthropic-Messages-Format (das spricht OmniRoute),
+    verzichtet aber auf Anthropic-spezifische Extras (Beta-Fallbacks, JSON-Schema-Zwang,
+    Thinking), weil dahinter auch andere Modelle antworten können. Das JSON wird
+    dann per Anweisung angefordert und tolerant ausgelesen.
+    """
+
+    def __init__(self, effort: str = "low", gateway: str | None = None, modell: str | None = None):
         import anthropic
 
-        self._anthropic = anthropic
-        self.client = anthropic.Anthropic()
         self.effort = effort
+        self.gateway = gateway
+        if gateway:
+            schluessel = os.environ.get("OMNIROUTE_API_KEY") or os.environ.get("ANTHROPIC_AUTH_TOKEN")
+            if not schluessel:
+                sys.exit("OmniRoute-Schlüssel fehlt: OMNIROUTE_API_KEY setzen "
+                         "(Dashboard → Endpoints). Siehe README.md.")
+            # Kein /v1 anhängen – das SDK ergänzt /v1/messages selbst.
+            self.client = anthropic.Anthropic(base_url=gateway.rstrip("/").removesuffix("/v1"),
+                                              auth_token=schluessel)
+            self.modell = modell or "auto"
+        else:
+            self.client = anthropic.Anthropic()
+            self.modell = modell or MODEL
 
     def analysiere(self, jpeg: bytes, name: str, technik: dict) -> dict:
         hinweise = json.dumps({"dateiname": name, **technik}, ensure_ascii=False)
+        inhalt = [
+            {"type": "image", "source": {"type": "base64", "media_type": "image/jpeg",
+                                         "data": base64.standard_b64encode(jpeg).decode()}},
+            {"type": "text", "text": f"Technische Hinweise: {hinweise}\n\nOrdne dieses Bild ein."},
+        ]
+        if self.gateway:
+            return self._ueber_gateway(inhalt)
+
         antwort = self.client.beta.messages.create(
-            model=MODEL,
+            model=self.modell,
             max_tokens=4096,
             betas=["server-side-fallback-2026-07-01"],
             fallbacks="default",
@@ -245,14 +272,7 @@ class Klassifizierer:
                 "format": {"type": "json_schema", "schema": ANTWORT_SCHEMA},
             },
             system=[{"type": "text", "text": SYSTEM_PROMPT, "cache_control": {"type": "ephemeral"}}],
-            messages=[{
-                "role": "user",
-                "content": [
-                    {"type": "image", "source": {"type": "base64", "media_type": "image/jpeg",
-                                                 "data": base64.standard_b64encode(jpeg).decode()}},
-                    {"type": "text", "text": f"Technische Hinweise: {hinweise}\n\nOrdne dieses Bild ein."},
-                ],
-            }],
+            messages=[{"role": "user", "content": inhalt}],
         )
         if antwort.stop_reason == "refusal":
             raise RuntimeError("Claude hat die Analyse dieses Bildes abgelehnt.")
@@ -260,6 +280,62 @@ class Klassifizierer:
             raise RuntimeError("Antwort wurde abgeschnitten (max_tokens).")
         text = "".join(b.text for b in antwort.content if b.type == "text")
         return json.loads(text)
+
+    def _ueber_gateway(self, inhalt: list) -> dict:
+        system = (SYSTEM_PROMPT + "\n\nAntworte ausschließlich mit einem JSON-Objekt, ohne Erklärtext "
+                  "und ohne Markdown, nach diesem JSON-Schema:\n" + json.dumps(ANTWORT_SCHEMA, ensure_ascii=False))
+        antwort = self.client.messages.create(
+            model=self.modell,
+            max_tokens=4096,
+            system=system,
+            messages=[{"role": "user", "content": inhalt}],
+        )
+        if antwort.stop_reason == "refusal":
+            raise RuntimeError("Das Modell hat die Analyse dieses Bildes abgelehnt.")
+        text = "".join(getattr(b, "text", "") for b in antwort.content)
+        daten = _json_aus_text(text)
+        daten["_modell"] = getattr(antwort, "model", self.modell)  # welches Modell wirklich geantwortet hat
+        return _normalisieren(daten)
+
+
+def _json_aus_text(text: str) -> dict:
+    """Holt das erste JSON-Objekt aus einer Antwort – auch wenn ein Modell Text oder ```-Blöcke drumherum schreibt."""
+    start = text.find("{")
+    if start < 0:
+        raise RuntimeError(f"Keine JSON-Antwort erhalten: {text[:200]!r}")
+    try:
+        daten, _ = json.JSONDecoder().raw_decode(text[start:])
+    except json.JSONDecodeError as fehler:
+        raise RuntimeError(f"Antwort ist kein gültiges JSON ({fehler}): {text[start:start + 200]!r}") from None
+    if not isinstance(daten, dict):
+        raise RuntimeError("Antwort ist kein JSON-Objekt.")
+    return daten
+
+
+def _normalisieren(d: dict) -> dict:
+    """Bringt Antworten anderer Modelle in die erwartete Form (fehlende Felder, falsche Werte)."""
+    d["kategorie"] = str(d.get("kategorie") or "").strip().lower()
+    d["sicherheit"] = str(d.get("sicherheit") or "").strip().lower()
+    if d["kategorie"] not in KATEGORIEN:
+        d["kategorie"] = "sonstiges"
+    if d.get("sicherheit") not in ("hoch", "mittel", "niedrig"):
+        d["sicherheit"] = "niedrig"
+    for feld in ("beschreibung", "dateiname_vorschlag"):
+        d[feld] = str(d.get(feld) or "")
+    d.setdefault("herkunft", "unbekannt")
+    for feld in ("ort", "datum"):
+        d.setdefault(feld, None)
+    for feld in ("tags", "naechste_schritte"):
+        d[feld] = [str(x) for x in d.get(feld) or [] if x]
+    r = d.get("rechnung")
+    if isinstance(r, dict):
+        try:
+            r["betrag"] = None if r.get("betrag") in (None, "") else float(str(r["betrag"]).replace(",", "."))
+        except ValueError:
+            r["betrag"] = None
+    else:
+        d["rechnung"] = None
+    return d
 
 
 # --------------------------------------------------------------------------- Quellen
@@ -353,12 +429,12 @@ def berichte_schreiben(ergebnisse: list[Ergebnis], ausgabe: Path, titel: str) ->
     with open(ausgabe / "ergebnisse.csv", "w", newline="", encoding="utf-8-sig") as f:
         w = csv.writer(f, delimiter=";")
         w.writerow(["Datei", "Kategorie", "Sicherheit", "Herkunft", "Datum", "Ort", "Beschreibung",
-                    "Zielpfad", "Nächste Schritte", "Fehler"])
+                    "Zielpfad", "Nächste Schritte", "Modell", "Fehler"])
         for e in ergebnisse:
             a = e.analyse or {}
             w.writerow([e.pfad, a.get("kategorie"), a.get("sicherheit"), a.get("herkunft"), a.get("datum"),
                         a.get("ort"), a.get("beschreibung"), e.zielpfad,
-                        " | ".join(a.get("naechste_schritte", [])), e.fehler])
+                        " | ".join(a.get("naechste_schritte", [])), a.get("_modell"), e.fehler])
 
     rechnungen = [e for e in ergebnisse if e.analyse and e.analyse.get("rechnung")]
     with open(ausgabe / "rechnungen.csv", "w", newline="", encoding="utf-8-sig") as f:
@@ -416,6 +492,7 @@ def _html_bericht(ergebnisse: list[Ergebnis], titel: str) -> str:
     <p class="klein"><b>Woher:</b> {esc(herkunft)}{karte}{(' · ' + esc(a['ort'])) if a.get('ort') else ''}</p>
     <p class="klein"><b>Wohin</b> ({status}): <code>{esc(e.zielpfad)}</code></p>
     {'<ul>' + schritte + '</ul>' if schritte else ''}
+    {'<p class="modell">Modell: ' + esc(a['_modell']) + '</p>' if a.get('_modell') else ''}
   </div>
 </article>""")
     return f"""<!doctype html><html lang="de"><head><meta charset="utf-8">
@@ -436,6 +513,7 @@ h1{{margin:0 0 4px;font-size:1.5rem}}.meta{{color:var(--leise);margin:0 0 16px}}
 .sich{{font-size:.75rem;color:var(--leise)}}.s-niedrig{{color:#c0392b}}
 .name{{font-size:.8rem;color:var(--leise);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
 .klein{{font-size:.85rem}}code{{font-size:.8rem;word-break:break-all}}.re{{background:var(--bg);padding:6px 8px;border-radius:6px}}
+.modell{{font-size:.75rem;color:var(--leise);margin-top:8px}}
 ul{{margin:6px 0 0;padding-left:18px;font-size:.85rem}}a{{color:var(--akzent)}}
 </style></head><body>
 <h1>{esc(titel)}</h1><p class="meta">{len(ergebnisse)} Bilder · erstellt {datetime.now():%d.%m.%Y %H:%M}</p>
@@ -482,6 +560,10 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--max", type=int, default=0, help="Höchstens so viele Bilder scannen (0 = alle)")
     p.add_argument("--ziele", type=Path, help="JSON-Datei mit eigenen Zielordnern je Kategorie")
     p.add_argument("--ausgabe", type=Path, default=Path("bildscanner-bericht"), help="Ordner für Berichte")
+    p.add_argument("--gateway", default=os.environ.get("OMNIROUTE_URL"),
+                   help="Über ein lokales Gateway statt direkt bei Anthropic, z. B. http://localhost:20128 "
+                        "(OmniRoute). Alternativ Umgebungsvariable OMNIROUTE_URL.")
+    p.add_argument("--modell", help='Modell-ID (Standard: claude-opus-5-5 direkt, "auto" über Gateway)')
     p.add_argument("--effort", default="low", choices=["low", "medium", "high"],
                    help="Wie gründlich Claude nachdenkt (low reicht meistens)")
     args = p.parse_args(argv)
@@ -504,7 +586,7 @@ def main(argv: list[str] | None = None) -> int:
 
     args.ausgabe.mkdir(parents=True, exist_ok=True)
     cache = Cache(args.ausgabe / "cache.json")
-    klassifizierer = Klassifizierer(args.effort)
+    klassifizierer = Klassifizierer(args.effort, args.gateway, args.modell)
     ergebnisse: list[Ergebnis] = []
     gesehen: dict[str, str] = {}
 
