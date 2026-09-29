@@ -1,0 +1,5 @@
+anthropic>=1.9
+pillow>=10
+dropbox>=12
+# optional, für iPhone-Fotos (.heic):
+pillow-heif

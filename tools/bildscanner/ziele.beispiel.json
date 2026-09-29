@@ -1,0 +1,5 @@
+{
+  "rechnung": "Buchhaltung/Belege/{jahr}/{monat}",
+  "ferienhaus": "Ferienhaus/Website-Fotos",
+  "urlaubsfoto": "Fotos/{jahr}/{ort}"
+}
